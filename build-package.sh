@@ -1,8 +1,11 @@
 #!/bin/bash
 
 # Download the installer archive from Mozilla distribution server
-if [ ! -e thunderbird-latest.tar.bz2 ]; then
-	wget -O thunderbird-latest.tar.bz2 'https://download.mozilla.org/?product=thunderbird-latest&os=linux64&lang=en-US'
+if [ ! -e thunderbird-latest.tar.xz ]; then
+	if ! wget -O thunderbird-latest.tar.xz 'https://download.mozilla.org/?product=thunderbird-latest&os=linux64&lang=en-US'; then
+		echo "Failed to download distribution package from mozilla"
+		exit 201
+	fi
 fi
 
 # Make necessary directories
@@ -12,7 +15,10 @@ mkdir -p thunderbird-vendor/opt/mozilla
 mkdir -p thunderbird-vendor/usr/share/applications
 
 # Extract the installer archive
-tar -xjvf thunderbird-latest.tar.bz2 -C thunderbird-vendor/opt/mozilla
+if ! tar -xJvf thunderbird-latest.tar.xz -C thunderbird-vendor/opt/mozilla; then
+	echo "Failed to extract downloaded package"
+	exit 201
+fi
 
 # Execute the Thunderbird binary to get the version number
 version=$(thunderbird-vendor/opt/mozilla/thunderbird/thunderbird --version | sed 's/.* //')
@@ -44,5 +50,5 @@ chmod 755 thunderbird-vendor/DEBIAN
 dpkg-deb --build thunderbird-vendor
 
 # Clean up
-rm thunderbird-latest.tar.bz2
+rm thunderbird-latest.tar.xz
 rm -r thunderbird-vendor
