@@ -22,6 +22,10 @@ fi
 
 # Execute the Thunderbird binary to get the version number
 version=$(thunderbird-vendor/opt/mozilla/thunderbird/thunderbird --version | sed 's/.* //')
+if [ -z "$version" ]; then
+	echo "Did not get a valid version from running the downloaded application. Check that the package was downloaded and extracted successfully and try again."
+	exit 202
+fi
 
 # Create control file for package
 echo "Package: thunderbird-vendor
