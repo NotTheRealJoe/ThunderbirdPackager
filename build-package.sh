@@ -46,7 +46,8 @@ StartupNotify=false
 Terminal=false
 Type=Application
 Categories=Internet;
-Keywords=thunderbird;email;e-mail;mozilla;" > thunderbird-vendor/usr/share/applications/thunderbird.desktop
+Keywords=thunderbird;email;e-mail;mozilla;
+MimeType=x-scheme-handler/mailto" > thunderbird-vendor/usr/share/applications/thunderbird.desktop
 
 # Build the package
 chmod g-s thunderbird-vendor/DEBIAN
